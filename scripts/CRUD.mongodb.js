@@ -104,5 +104,32 @@ db.inventory.find({
 
 // всех юзеров, у которых есть поле money
 db.users.find({
-  money: { $exists: false }
+  money: { $exists: true }
+});
+
+/*
+  возьмите и вставте данные инвентаря
+  найдите мне все записи, в которых:
+    - количество меньше или равно 50
+    - статус равен A
+    - ширина больше 16 ИЛИ высота мешьне 16
+
+  найдите все записи в таблице юзеров у которых есть поля
+  email и password
+*/
+// 1
+db.inventory.find({ qty: { $lte: 50 } });
+// 2
+db.inventory.find({ status: 'A' });
+// 3
+db.inventory.find({
+  $or: [
+    { 'size.w': { $gt: 16 } },
+    { 'size.h': { $lt: 16 } }
+  ]
+});
+// 4
+db.users.find({
+  email: { $exists: true },
+  password: { $exists: true }
 });
