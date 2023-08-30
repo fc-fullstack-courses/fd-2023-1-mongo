@@ -13,7 +13,7 @@ db.users.insertOne({
   email: "test@test.test",
   password: "12345sakdnfdsokf",
   isMale: true,
-  address : {
+  address: {
     countty: "UA",
     city: "ZP",
   },
@@ -42,3 +42,67 @@ db.users.insertMany([
     email: 'mail5@mail.com',
   },
 ]);
+
+db.inventory.insertMany([
+  { item: "journal", qty: 25, size: { h: 14, w: 21, uom: "cm" }, status: "A" },
+  { item: "notebook", qty: 50, size: { h: 8.5, w: 11, uom: "in" }, status: "A" },
+  { item: "paper", qty: 100, size: { h: 8.5, w: 11, uom: "in" }, status: "D" },
+  { item: "planner", qty: 75, size: { h: 22.85, w: 30, uom: "cm" }, status: "D" },
+  { item: "postcard", qty: 45, size: { h: 10, w: 15.25, uom: "cm" }, status: "A" }
+]);
+
+// Read
+// найти все записи в таблице / коллекции
+db.inventory.find();
+// все записи со status = D
+db.inventory.find({ status: 'D' });
+// все заказы с количеством больше 40
+db.inventory.find({ qty: { $gt: 40 } });
+// найти все journal, planner и paper
+db.inventory.find({ item: { $in: ['journal', 'planner', 'paper'] } });
+// все записи, у которых высота (h) больше 11
+db.inventory.find({ 'size.h': { $gt: 11 } });
+// все записи, у которых высота (h) больше 11 И status = D
+// v1
+db.inventory.find({ 'size.h': { $gt: 11 }, status: 'D' });
+// v2
+db.inventory.find({
+  $and: [
+    { 'size.h': { $gt: 11 } },
+    { status: 'D' }
+  ]
+});
+// все записи, у которых высота (h) больше 11 ИЛИ status = D
+db.inventory.find({
+  $or: [
+    { 'size.h': { $gt: 11 } },
+    { status: 'D' }
+  ]
+});
+// все записи, у которых высота (h) больше 11сm ИЛИ status = A
+db.inventory.find({
+  $or: [
+    { status: 'A' },
+    {
+      $and: [
+        { 'size.h': { $gt: 11 } },
+        { 'size.uom': 'cm' }
+      ]
+    }
+  ]
+});
+// 
+db.inventory.find({
+  $or: [
+    { status: 'A' },
+    {
+      'size.h': { $gt: 11 },
+      'size.uom': 'cm'
+    }
+  ]
+});
+
+// всех юзеров, у которых есть поле money
+db.users.find({
+  money: { $exists: false }
+});
