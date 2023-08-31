@@ -129,3 +129,30 @@ db.workers.aggregate([
     $unset: 'companyId'
   }
 ]);
+
+// вернуть все компании и количество их сотрудников
+db.companies.aggregate([
+  {
+    $lookup: {
+      from: 'workers',
+      localField: '_id',
+      foreignField: 'companyId',
+      as: 'workers'
+    }
+  },
+  {
+    $unwind: '$workers'
+  },
+  {
+    $group: {
+      _id: '$name',
+      workersAmount: {
+        $count: {}
+      },
+      // для монги меньше 5,0
+      workersAmountOld: {
+        $sum: 1
+      }
+    }
+  }
+]);
