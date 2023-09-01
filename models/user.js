@@ -24,12 +24,14 @@ const userSchema = new Schema({
   password: {
     type: String,
     required: true,
-    match: [/^[a-zA-Z0-9]{8,16}$/,'Password must be 8-16 symbols and must contain letters, and numbers only']
+    match: [/^[a-zA-Z0-9]{8,16}$/, 'Password must be 8-16 symbols and must contain letters, and numbers only']
   },
   isOnline: {
     type: Boolean,
     default: false
   },
+}, {
+  timestamps: true
 });
 
 const User = model('User', userSchema);
