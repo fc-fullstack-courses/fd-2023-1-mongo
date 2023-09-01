@@ -156,3 +156,100 @@ db.companies.aggregate([
     }
   }
 ]);
+
+/*
+  К таблице Компаний добавте таблицу товаров
+  у товаров могут быть названия, цена, количество, компания-производитель
+
+  С помощью аггрегаций получите следующие данные:
+    - все компании и их товары
+    - все компании и количество их товаров
+
+*/
+
+db.createCollection('products', {
+  validator: {
+    $jsonSchema: {
+      bsonType: 'object',
+      required: ['name', 'companyId'],
+      properties: {
+        name: {
+          bsonType: 'string'
+        },
+        price: {
+          bsonType: 'number',
+          minimum: 0
+        },
+        quantity: {
+          bsonType: 'int',
+          minimum: 0
+        },
+        companyId: {
+          bsonType: 'objectId'
+        }
+      }
+    }
+  }
+});
+
+db.products.insertMany([
+  {
+    name: 'Product 1',
+    price: 9999.99,
+    quantity: 100,
+    companyId: new ObjectId('64f08f1c8190d1a45b64de28')
+  },
+  {
+    name: 'Product 2',
+    price: 52.99,
+    quantity: 7558,
+    companyId: new ObjectId('64f08f1c8190d1a45b64de28')
+  },
+  {
+    name: 'Product 3',
+    price: 1727.99,
+    quantity: 10,
+    companyId: new ObjectId('64f08f1c8190d1a45b64de29')
+  },
+  {
+    name: 'Product 4',
+    price: 5725257.99,
+    quantity: 414777,
+    companyId: new ObjectId('64f08f1c8190d1a45b64de2a')
+  },
+]);
+
+// - все компании и их товары
+db.companies.aggregate([
+  {
+    $lookup: {
+      from: 'products',
+      localField: '_id',
+      foreignField: 'companyId',
+      as: 'products'
+    }
+  }
+]);
+
+// - все компании и количество их товаров
+db.companies.aggregate([
+  {
+    $lookup: {
+      from: 'products',
+      localField: '_id',
+      foreignField: 'companyId',
+      as: 'products'
+    }
+  },
+  {
+    $unwind: '$products'
+  },
+  {
+    $group: {
+      _id: '$name',
+      productsAmount: {
+        $count: {}
+      }
+    }
+  }
+]);
