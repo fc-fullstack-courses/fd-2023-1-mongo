@@ -8,3 +8,6 @@ async function connectToDB() {
 
 connectToDB().catch(err => console.log(err));
 
+module.exports = {
+  User
+}

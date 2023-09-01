@@ -1,33 +1,44 @@
 const createHttpError = require("http-errors");
+const { User } = require("../models");
+
 
 module.exports.createUser = async (req, res, next) => {
   try {
     const { body } = req;
 
-    res.status(201).send({ data: body });
+    const user = await User.create(body);
+
+    res.status(201).send({ data: user });
   } catch (error) {
     next(error);
   }
 }
 
 module.exports.getUsers = async (req, res, next) => {
-  res.send({ data: [] })
+
+  const users = await User.find();
+
+  res.send({ data: users })
 }
 
 module.exports.getUser = async (req, res, next) => {
   try {
     const { params: { userId } } = req;
 
-    res.send({ data: { id: userId } });
+    const user = await User.findById(userId);
+
+    res.send({ data: user });
   } catch (error) {
     next(error);
   }
 }
 module.exports.updateUser = async (req, res, next) => {
   try {
-    const { params: { userId } } = req;
+    const { params: { userId }, body } = req;
 
-    res.send({ data: { id: userId } });
+    const updatedUser = await User.findByIdAndUpdate(userId, body, { new: true });
+
+    res.send({ data: updatedUser });
   } catch (error) {
     next(error);
   }
@@ -37,7 +48,9 @@ module.exports.deleteUser = async (req, res, next) => {
   try {
     const { params: { userId } } = req;
 
-    res.send({ data: { id: userId } });
+    const user = await User.findByIdAndDelete(userId);
+
+    res.send({ data: user });
   } catch (error) {
     next(error);
   }
