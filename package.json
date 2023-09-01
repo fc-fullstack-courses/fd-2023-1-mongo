@@ -1,0 +1,28 @@
+{
+  "name": "fd-2023-1-mongo",
+  "version": "1.0.0",
+  "description": "",
+  "private": true,
+  "scripts": {
+    "start": "nodemon ./server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fc-fullstack-courses/fd-2023-1-mongo.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/fc-fullstack-courses/fd-2023-1-mongo/issues"
+  },
+  "homepage": "https://github.com/fc-fullstack-courses/fd-2023-1-mongo#readme",
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "http-errors": "^2.0.0",
+    "yup": "^1.2.0"
+  }
+}
