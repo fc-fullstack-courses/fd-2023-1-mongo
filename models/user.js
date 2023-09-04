@@ -30,6 +30,10 @@ const userSchema = new Schema({
     type: Boolean,
     default: false
   },
+  messages: [{
+    type: Schema.Types.ObjectId,
+    ref: 'Message'
+  }]
 }, {
   timestamps: true
 });

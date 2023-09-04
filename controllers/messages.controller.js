@@ -7,7 +7,7 @@ module.exports.createMessage = async (req, res, next) => {
 
     const message = await Message.create({
       ...body,
-      userId: user._id
+      user: user._id
     });
 
 
@@ -33,7 +33,7 @@ module.exports.getUserMessages = async (req, res, next) => {
     const { user } = req;
 
     const userMessages = await Message.find({
-      userId: user._id
+      user: user._id
     });
 
     res.send({ data: userMessages });
@@ -48,7 +48,7 @@ module.exports.getMessage = async (req, res, next) => {
 
     const message = await Message.findOne({
       _id: messageId,
-      userId
+      user: userId
     });
 
     if (!message) {
@@ -67,7 +67,7 @@ module.exports.updateMessage = async (req, res, next) => {
 
     const updatedMessage = await Message.findOneAndUpdate({
       _id: messageId,
-      userId
+      user: userId
     }, body, {new: true});
 
     if(!updatedMessage) {
@@ -86,7 +86,7 @@ module.exports.deleteMessage = async (req, res, next) => {
 
     const message = await Message.findOneAndDelete({
       _id: messageId,
-      userId
+      user: userId
     });
 
     if (!message) {

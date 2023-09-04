@@ -5,9 +5,10 @@ const messageSchema = new Schema({
     type: String,
     required: [true, 'Message body is required']
   },
-  userId: {
+  user: {
     type: Schema.Types.ObjectId,
-    required: true
+    required: true,
+    ref: 'User'
   }
 }, { timestamps: true });
 
