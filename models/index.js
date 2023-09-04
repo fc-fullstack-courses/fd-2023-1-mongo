@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const CONSTANTS = require('../constants');
 const User = require('./user');
+const Message = require('./message');
 
 async function connectToDB() {
   await mongoose.connect(CONSTANTS.DB_URL);
@@ -9,5 +10,6 @@ async function connectToDB() {
 connectToDB().catch(err => console.log(err));
 
 module.exports = {
-  User
+  User,
+  Message
 }
