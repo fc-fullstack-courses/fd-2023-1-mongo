@@ -16,7 +16,7 @@ module.exports.createUser = async (req, res, next) => {
 
 module.exports.getUsers = async (req, res, next) => {
 
-  const users = await User.find();
+  const users = await User.find().populate('messages');
 
   res.send({ data: users })
 }

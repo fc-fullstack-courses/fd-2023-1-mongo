@@ -10,6 +10,8 @@ module.exports.createMessage = async (req, res, next) => {
       user: user._id
     });
 
+    // дописать в массив messages у юзера айдишник нового сообщения
+    await user.updateOne({ $push: { messages: message._id } });
 
     res.status(201).send({ data: message });
   } catch (error) {
@@ -34,7 +36,7 @@ module.exports.getUserMessages = async (req, res, next) => {
 
     const userMessages = await Message.find({
       user: user._id
-    });
+    }).populate('user');
 
     res.send({ data: userMessages });
   } catch (error) {
@@ -68,13 +70,13 @@ module.exports.updateMessage = async (req, res, next) => {
     const updatedMessage = await Message.findOneAndUpdate({
       _id: messageId,
       user: userId
-    }, body, {new: true});
+    }, body, { new: true });
 
-    if(!updatedMessage) {
+    if (!updatedMessage) {
       return (next(createHttpError(404, 'Message not found')));
     }
 
-    res.send({data: updatedMessage});
+    res.send({ data: updatedMessage });
   } catch (error) {
     next(error)
   }
@@ -93,7 +95,7 @@ module.exports.deleteMessage = async (req, res, next) => {
       return (next(createHttpError(404, 'Message not found')));
     }
 
-    res.send({data: message});
+    res.send({ data: message });
   } catch (error) {
     next(error)
   }
