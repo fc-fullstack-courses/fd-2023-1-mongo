@@ -36,7 +36,13 @@ module.exports.getUserMessages = async (req, res, next) => {
 
     const userMessages = await Message.find({
       user: user._id
-    }).populate('user');
+    }, '-__v')
+      // .populate('user', 'firstName lastName email isOnline');
+      .populate({
+        path: 'user',
+        select: 'firstName lastName email isOnline'
+      });
+
 
     res.send({ data: userMessages });
   } catch (error) {

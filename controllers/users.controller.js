@@ -25,7 +25,31 @@ module.exports.getUser = async (req, res, next) => {
   try {
     const { params: { userId } } = req;
 
-    const user = await User.findById(userId);
+
+
+    // оставляем только указанные поля
+    // const user = await User.findById(userId, 'firstName lastName email');
+
+    // const user = await User.findById(userId, ['firstName', 'lastName', 'email']);
+
+    // const user = await User.findById(userId, {
+    //   firstName: 1,
+    //   lastName: 1,
+    //   email: 1
+    // });
+
+    // const user = await User.findById(userId).select('firstName lastName email');
+
+    // убираем только указанные поля
+
+    // const user = await User.findById(userId, '-password -__v');
+
+    // const user = await User.findById(userId, ['-password', '-__v']);
+
+    const user = await User.findById(userId, {
+      password: 0,
+      __v: 0
+    });
 
     res.send({ data: user });
   } catch (error) {
