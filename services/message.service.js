@@ -14,7 +14,7 @@ module.exports.createMessage = async ({ user, body }) => {
   });
 
   // дописать в массив messages у юзера айдишник нового сообщения
-  await messageData.user.updateOne({ $push: { messages: newMessage._id } });
+  await user.updateOne({ $push: { messages: newMessage._id } });
 
   return newMessage;
 }
