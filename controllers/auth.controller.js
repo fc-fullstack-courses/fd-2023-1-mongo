@@ -1,9 +1,7 @@
 const createHttpError = require("http-errors");
-const jwt = require('jsonwebtoken');
-const { promisify } = require('util');
-const { User, RefreshToken } = require("../models");
+const { User } = require("../models");
+const AuthService = require('../services/auth.service');
 
-const jwtSign = promisify(jwt.sign);
 
 module.exports.registration = async (req, res, next) => {
   try {
@@ -11,29 +9,11 @@ module.exports.registration = async (req, res, next) => {
 
     const user = await User.create(body);
 
-    // 1. создадим payload для токена
-    const tokenPayload = {
-      id: user._id,
-      firstName: user.firstName,
-      lastName: user.lastName
-    }
-
-    // 2. генерируем токены
-    const accessToken = await jwtSign(tokenPayload, '398yt9whf98hr23r903dj0efdje', { expiresIn: '1min' });
-    const refreshToken = await jwtSign(tokenPayload, '7943yt43798rg23798rhg2387rg238r23', { expiresIn: '7d' });
-
-    // 3. сохранить рефреш токен в БД
-    await RefreshToken.create({ token: refreshToken, userId: user._id });
+    const userWithTokens = await AuthService.createSession(user);
 
     // 4. Отправить все на фронт
     res.status(201).send({
-      data: {
-        user,
-        tokenPair: {
-          accessToken,
-          refreshToken
-        }
-      }
+      data: userWithTokens
     });
   } catch (error) {
     next(error);
@@ -59,29 +39,11 @@ module.exports.login = async (req, res, next) => {
       return next(createHttpError(404, 'Invalid data for user'));
     }
 
-    // 3.1. создадим payload для токена
-    const tokenPayload = {
-      id: user._id,
-      firstName: user.firstName,
-      lastName: user.lastName
-    }
-
-    // 3.2. генерируем токены
-    const accessToken = await jwtSign(tokenPayload, '398yt9whf98hr23r903dj0efdje', { expiresIn: '1min' });
-    const refreshToken = await jwtSign(tokenPayload, '7943yt43798rg23798rhg2387rg238r23', { expiresIn: '7d' });
-
-    // 3.3 сохранить рефреш токен в БД
-    await RefreshToken.create({ token: refreshToken, userId: user._id });
+    const userWithTokens = await AuthService.createSession(user);
 
     // 3.4. Отправить все на фронт
-    res.status(201).send({
-      data: {
-        user,
-        tokenPair: {
-          accessToken,
-          refreshToken
-        }
-      }
+    res.send({
+      data: userWithTokens
     });
   } catch (error) {
     next(error);
