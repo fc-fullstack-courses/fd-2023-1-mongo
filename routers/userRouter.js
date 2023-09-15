@@ -5,7 +5,7 @@ const messageRouter = require('./messageRouter');
 
 userRouter.route('/')
   .post(userController.createUser)
-  .get(userController.getUsers);
+  .get( userController.getUsers);
 
 userRouter.route('/:userId')
   .get(userController.getUser)
