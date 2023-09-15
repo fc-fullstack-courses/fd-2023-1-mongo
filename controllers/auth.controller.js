@@ -52,7 +52,11 @@ module.exports.login = async (req, res, next) => {
 
 module.exports.refresh = async (req, res, next) => {
   try {
-    // TODO
+    const { tokenInstance } = req;
+
+    const userWithTokens = await AuthService.refreshSession(tokenInstance);
+
+    res.send({ data: userWithTokens });
   } catch (error) {
     next(error);
   }
