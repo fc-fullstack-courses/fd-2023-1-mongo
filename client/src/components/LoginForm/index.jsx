@@ -1,6 +1,8 @@
 import React from 'react';
 import { Formik, Form, Field } from 'formik';
 import * as yup from 'yup';
+import { useDispatch } from 'react-redux';
+import { login } from '../../redux/slices/authSlice';
 
 const LOGIN_SCHEMA = yup.object({
   email: yup.string().email().required(),
@@ -13,7 +15,11 @@ const initialValues = {
 };
 
 const LoginForm = (props) => {
+  const dispatch = useDispatch();
+
   const handleSubmit = (values, formikBag) => {
+    dispatch(login(values));
+
     formikBag.resetForm();
   };
 
