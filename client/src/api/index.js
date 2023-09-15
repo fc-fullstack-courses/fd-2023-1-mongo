@@ -7,6 +7,11 @@ const httpClient = axios.create({
 
 let accessToken = null;
 
+export const clearTokens = () => {
+  accessToken = null;
+  localStorage.removeItem(CONSTANTS.REFRESH_TOKEN);
+}
+
 httpClient.interceptors.request.use(function (config) {
   // Do something before request is sent
 

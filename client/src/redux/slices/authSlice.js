@@ -35,9 +35,14 @@ const initialState = {
   error: null
 }
 
-const userSlice = createSlice({
+const authSlice = createSlice({
   name: SLICE_NAME,
   initialState,
+  reducers: {
+    logout: (state) => {
+      return initialState;
+    }
+  },
   extraReducers: (builder) => {
     builder.addCase(login.pending, (state) => {
       state.isLoading = true;
@@ -69,8 +74,8 @@ const userSlice = createSlice({
   }
 });
 
-const { reducer: authReducer, actions } = userSlice;
+const { reducer: authReducer, actions: { logout } } = authSlice;
 
-export { login, refresh };
+export { login, refresh, logout };
 
 export default authReducer;
