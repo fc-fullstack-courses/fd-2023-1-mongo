@@ -1,3 +1,8 @@
 .*
 !.gitignore
 node_modules/
+
+# в реальном коде так не делаем
+!.env
+# делаем вот так
+!.env.example
