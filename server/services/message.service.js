@@ -8,8 +8,9 @@ const { Message } = require('../models');
  * @returns {object} new message
  */
 module.exports.createMessage = async ({ user, body }) => {
+
   const newMessage = await Message.create({
-    ...body,
+    body,
     user: user._id
   });
 
