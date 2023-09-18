@@ -23,6 +23,9 @@ const Header = (props) => {
             <Link to='/login'>Login page</Link>
           </li>
           <li>
+            <Link to='/registration'>Registration page</Link>
+          </li>
+          <li>
             <Link to='/chat'>Chat page</Link>
           </li>
         </ul>
