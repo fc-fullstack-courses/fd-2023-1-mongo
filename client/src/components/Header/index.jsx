@@ -19,10 +19,11 @@ const Header = (props) => {
           <li>
             <Link to='/'>Home</Link>
           </li>
-        </ul>
-        <ul>
           <li>
             <Link to='/login'>Login page</Link>
+          </li>
+          <li>
+            <Link to='/chat'>Chat page</Link>
           </li>
         </ul>
       </nav>
