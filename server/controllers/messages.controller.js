@@ -20,7 +20,10 @@ module.exports.createMessage = async (req, res, next) => {
 module.exports.getAllMessages = async (req, res, next) => {
   try {
 
-    const messages = await MessageService.findMessages();
+    const messages = await MessageService.findMessages({}, '-__v', {
+      path: 'user',
+      select: 'firstName lastName email isOnline'
+    });
 
     res.send({ data: messages });
   } catch (error) {
