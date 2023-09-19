@@ -28,6 +28,9 @@ const messagesSlice = createSlice({
   reducers: {
     addMessage: (state, action) => {
       state.messages.push(action.payload);
+    },
+    addMessageError: (state, action) => {
+      state.error = action.payload;
     }
   },
   extraReducers: (builder) => {
@@ -47,8 +50,8 @@ const messagesSlice = createSlice({
   }
 });
 
-const { reducer: messagesReducer, actions: { addMessage } } = messagesSlice;
+const { reducer: messagesReducer, actions: { addMessage, addMessageError } } = messagesSlice;
 
-export { getMessages, addMessage }
+export { getMessages, addMessage, addMessageError }
 
 export default messagesReducer;

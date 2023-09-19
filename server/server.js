@@ -19,15 +19,20 @@ io.on('connection', (socket) => {
 
   // логика создания сообщения в реалтайме
   socket.on(SOCKET_EVENTS.NEW_MESSAGE, async (newMessageData) => {
-
     console.log('new message recieved');
     console.log(newMessageData);
+    try {
 
-    // 1. Создать запись о новом сообщении в БД
-    const newMessage = await MessageService.createMessage(newMessageData);
+      // 1. Создать запись о новом сообщении в БД
+      const newMessage = await MessageService.createMessage(newMessageData);
 
-    // 2. сообщить всем клиентам о новом сообщении в реалтайме
-    io.emit(SOCKET_EVENTS.NEW_MESSAGE, newMessage);
+      // 2. сообщить всем клиентам о новом сообщении в реалтайме
+      io.emit(SOCKET_EVENTS.NEW_MESSAGE, newMessage);
+    } catch (error) {
+      // посылаем сообщение о ошибке отправителю некорректного сообщения
+      socket.emit(SOCKET_EVENTS.NEW_MESSAGE_ERROR, error);
+    }
+
   });
 
   // событие отключения пользователя
