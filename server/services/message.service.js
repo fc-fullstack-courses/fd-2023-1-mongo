@@ -9,10 +9,10 @@ const { Message, User } = require('../models');
  */
 module.exports.createMessage = async ({ user, body }) => {
 
-  const newMessage = await Message.create({
+  const newMessage = await (await Message.create({
     body,
     user: user._id
-  });
+  })).populate({ path: 'user', select: 'firstName lastName email isOnline' });
 
   // дописать в массив messages у юзера айдишник нового сообщения
   await User.updateOne({ _id: user._id }, { $push: { messages: newMessage._id } });
