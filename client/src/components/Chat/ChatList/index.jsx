@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { getMessages } from '../../../redux/slices/messagesSlice';
+import ChatMessage from '../ChatMessage';
 
 const CHatList = () => {
   const { messages, isLoading, error } = useSelector((state) => state.message);
-
 
   const dispatch = useDispatch();
 
@@ -13,9 +13,7 @@ const CHatList = () => {
   }, []);
 
   const messagesListItems = messages.map((message) => (
-    <li key={message._id}>
-      <pre>{JSON.stringify(message, null, 4)}</pre>
-    </li>
+    <ChatMessage key={message._id} message={message} />
   ));
 
   return <ul>{messagesListItems}</ul>;
