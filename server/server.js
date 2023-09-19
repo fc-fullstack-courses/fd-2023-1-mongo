@@ -1,6 +1,6 @@
 const http = require('http');
 const app = require('./app.js');
-const { PORT } = require('./constants.js');
+const { PORT, SOCKET_EVENTS } = require('./constants.js');
 const { Server } = require('socket.io');
 const MessageService = require('./services/message.service.js');
 
@@ -18,7 +18,7 @@ io.on('connection', (socket) => {
   console.log(socket);
 
   // логика создания сообщения в реалтайме
-  socket.on('newMessage', async (newMessageData) => {
+  socket.on(SOCKET_EVENTS.NEW_MESSAGE, async (newMessageData) => {
 
     console.log('new message recieved');
     console.log(newMessageData);
@@ -27,7 +27,7 @@ io.on('connection', (socket) => {
     const newMessage = await MessageService.createMessage(newMessageData);
 
     // 2. сообщить всем клиентам о новом сообщении в реалтайме
-    io.emit('newMessage', newMessage);
+    io.emit(SOCKET_EVENTS.NEW_MESSAGE, newMessage);
   });
 
   // событие отключения пользователя

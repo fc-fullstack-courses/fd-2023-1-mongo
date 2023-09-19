@@ -16,6 +16,10 @@ const CONSTANTS = {
   ACCESS_TOKEN_EXPIRES_IN,
   REFRESH_TOKEN_SECRET,
   REFRESH_TOKEN_EXPIRES_IN,
+  SOCKET_EVENTS: {
+    NEW_MESSAGE: 'newMessage',
+    NEW_MESSAGE_ERROR: 'newMessageError'
+  }
 }
 
 module.exports = CONSTANTS;

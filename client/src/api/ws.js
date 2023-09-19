@@ -3,14 +3,16 @@ import CONSTANTS from "../constants";
 import { addMessage } from "../redux/slices/messagesSlice";
 import store from "../redux";
 
-const socket = io(CONSTANTS.WS_SERVER_URL);
+const { WS_SERVER_URL, SOCKET_EVENTS } = CONSTANTS;
+
+const socket = io(WS_SERVER_URL);
 
 // отправка данных нового сообщения на бек
 export const sendMessage = (newMessageData) => {
-  socket.emit('newMessage', newMessageData);
+  socket.emit(SOCKET_EVENTS.NEW_MESSAGE, newMessageData);
 }
 
 // записать новое сообщение
-socket.on('newMessage', (newMessage) => {
+socket.on(SOCKET_EVENTS.NEW_MESSAGE, (newMessage) => {
   store.dispatch(addMessage(newMessage));
 });
