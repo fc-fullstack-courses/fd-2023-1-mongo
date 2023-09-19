@@ -1,5 +1,6 @@
 import axios from 'axios';
 import CONSTANTS from '../constants';
+// ngrok-skip-browser-warning
 
 const httpClient = axios.create({
   baseURL: CONSTANTS.HTTP_SERVER_URL
@@ -18,6 +19,8 @@ httpClient.interceptors.request.use(function (config) {
   if (accessToken) {
     config.headers['Authorization'] = `Bearer ${accessToken}`;
   }
+
+  config.headers['ngrok-skip-browser-warning'] = '12345';
 
   return config;
 }, function (error) {

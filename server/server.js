@@ -15,12 +15,10 @@ const io = new Server(server, {
 io.on('connection', (socket) => {
   // запускается во время подключения вебсоект клиента к серверу
   console.log('socket connected');
-  console.log(socket);
 
   // логика создания сообщения в реалтайме
   socket.on(SOCKET_EVENTS.NEW_MESSAGE, async (newMessageData) => {
     console.log('new message recieved');
-    console.log(newMessageData);
     try {
 
       // 1. Создать запись о новом сообщении в БД

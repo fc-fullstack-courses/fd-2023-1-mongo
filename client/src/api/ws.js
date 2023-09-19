@@ -5,7 +5,11 @@ import store from "../redux";
 
 const { WS_SERVER_URL, SOCKET_EVENTS } = CONSTANTS;
 
-const socket = io(WS_SERVER_URL);
+const socket = io(WS_SERVER_URL, {
+  extraHeaders: {
+    'ngrok-skip-browser-warning': '54321'
+  }
+});
 
 // отправка данных нового сообщения на бек
 export const sendMessage = (newMessageData) => {
