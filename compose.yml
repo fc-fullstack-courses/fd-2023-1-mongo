@@ -1,0 +1,61 @@
+# для сверх древних файлов
+version: '3'
+
+# контейнеры в приложении
+services:
+
+  # набор инструкций для создания контейнера
+  client:
+    # образ на основании которого поднимаем контейнер
+    build: ./client #путь к папке с докерфайлом
+    ports:
+      - 3000:3000
+    volumes:
+      - ./client:/client:ro
+    depends_on:
+      - server
+    networks:
+      - front-net
+
+  server:
+    # образ на основании которого поднимаем контейнер
+    # build: ./server #путь к папке с докерфайлом
+    build:
+      context: ./server #путь к папке с докерфайлом 
+      dockerfile: Dockerfile-dev # название докерфайла
+    # маппинг портов
+    ports:
+      - 5001:5000
+    # .env файл
+    env_file:
+      - ./server/.env
+    volumes:
+      - ./server:/server:ro
+    # кто должен запуститься до этого контейнера
+    depends_on:
+      - db-mongo
+    restart: on-failure
+    networks:
+      - back-net
+      - front-net
+      
+  db-mongo:
+    # образ на основании которого поднимаем контейнер из докерхаба
+    image: mongo:6-jammy
+    ports:
+      - 27018:27017
+    # закрутить переменные окружения
+    environment:
+      - MONGO_INITDB_DATABASE=chatDb
+    # volumes
+    volumes:
+      - ~/Documents/fc/2023/FD-2023-1/backups/mongoChat:/data/db
+    networks:
+      - back-net
+
+# сети, которые будут созданы для контейнеров
+networks:
+  front-net:
+    name: frontend
+  back-net:
+    name: backend

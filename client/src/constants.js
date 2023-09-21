@@ -1,4 +1,4 @@
-const SERVER_URL = '2230-45-128-188-4.ngrok-free.app';
+const SERVER_URL = 'localhost:5001';
 
 const CONSTANTS = {
   HTTP_SERVER_URL: `https://${SERVER_URL}`,
